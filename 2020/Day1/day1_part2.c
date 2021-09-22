@@ -6,9 +6,9 @@ int main() {
     int num1,num2,num3,i;
     int count=0;
 
-    f=fopen("despesas","r");
-    p=fopen("despesas","r");
-    b=fopen("despesas","r");
+    f=fopen("puzzle","r");
+    p=fopen("puzzle","r");
+    b=fopen("puzzle","r");
 
     if (f==NULL)
         printf("Erro ao abrir o ficheiro");
