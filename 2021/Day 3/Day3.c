@@ -1,7 +1,9 @@
 #include <stdio.h>
 #include <string.h>
-#define TAM 60
-#define COMP 5
+#include <math.h>
+
+#define TAM 12000
+#define COMP 12
 /* Consumo energia = Tx Gama * Tx Epsilon
 
 Tx Gama -> Bit mais comum em cada coluna
@@ -11,18 +13,18 @@ int main(){
     FILE *f;
     int it=0;
     int positiveBitsCount=0, negativeBitsCount=0, txGama[COMP], 
-        txEpsilon[COMP],consumoEnergia=0;
+        txEpsilon[COMP],consumoEnergia=0,txGamaDecimal,txEpsilonDecimal;
     
-    int linhasMax=12,colunasMax=5,linhas[12],colunas=0;
+    int linhasMax=1000,colunasMax=12;
     char puzzle[TAM];
     int ite=0;
 
-    f = fopen("puzzle_test","r");
+    f = fopen("puzzle","r");
     if(f == NULL){
         perror("[ERRO] ao tentar abir o ficheiro\n");
     }
 
-    for(int k=0; k<colunasMax; ++k){
+    for(int k=0; k<colunasMax; k++){
         positiveBitsCount=0; negativeBitsCount=0;
         for(int i =0; i<linhasMax; ++i){
             for(int j=0; j<colunasMax; ++j){
@@ -40,29 +42,37 @@ int main(){
                     ++it;
             }
         }
-        //return;
+         
         fseek(f,0,SEEK_SET);
         printf("1 = %d / 0 = %d k[%d]\n",positiveBitsCount,negativeBitsCount,k);
        
-        for(ite=0; ite<COMP; ++ite){
-            if(positiveBitsCount > negativeBitsCount){
-                txGama[ite] = 1;
-                txEpsilon[ite] = 0;
-            }
-             else if(negativeBitsCount > positiveBitsCount){
-                txGama[ite] = 0;
-                txEpsilon[ite] = 1;
-            }
+       
+        if(positiveBitsCount > negativeBitsCount){
+                txGama[k] = 1;
+                txEpsilon[k] = 0;
+         }
+         else if(negativeBitsCount > positiveBitsCount){
+            txGama[k] = 0;
+            txEpsilon[k] = 1;
         }
+        it=0;
+    
+
+        
        
     }
-     for(ite=0; ite<COMP; ++ite){
-         printf("txGama:%d",txGama[ite]);
-         printf("txEpsilon:%d",txEpsilon[ite]);
-     }
-    
-       
-       
 
+   for(ite=0; ite<COMP; ++ite){  
+        if (txGama[ite]=='1'){
+           txGamaDecimal=txGamaDecimal+pow(2,txGama[ite] -(ite+1));
+        }
+     }
+     printf("%d\n",txGamaDecimal);
+
+   
+   
+   
+     fclose(f);
+ 
     
 }
